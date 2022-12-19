@@ -2,6 +2,8 @@ import torch
 import torch.nn as nn
 import Trainer, Dataloader
 
+import json
+
 class MLP(nn.Module):
     def __init__(self, vocab_size, embedding_dim, hidden_dim, num_classes):
         super(MLP, self).__init__()
@@ -31,7 +33,7 @@ class MLP(nn.Module):
         return x
 
 # Create the MLP model
-model = MLP(vocab_size, embedding_dim, hidden_dim, num_classes)
+model = MLP(20000, 200, 128, 2)
 
 # Load the pre-trained word embeddings
 with open('embeddings.json') as f:
@@ -39,6 +41,6 @@ with open('embeddings.json') as f:
 model.embedding.weight.data.copy_(torch.tensor(embeddings))
 
 # Train the model
-trainer = Trainer(model, train_loader, val_loader, test_loader, 'CrossEntropyLoss', optimizer)
+trainer = Trainer(model, CSVDataLoader(), val_loader, test_loader, 'CrossEntropyLoss', optimizer)
 trainer.train(num_epochs)
 trainer.test()
