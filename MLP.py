@@ -1,7 +1,6 @@
 import torch
 import torch.nn as nn
 import Trainer, Dataloader
-
 import json
 
 class MLP(nn.Module):
@@ -40,6 +39,7 @@ with open('embeddings.json') as f:
     embeddings = json.load(f)
 model.embedding.weight.data.copy_(torch.tensor(embeddings))
 
+num_epochs = 10
 # Train the model
 trainer = Trainer(model, CSVDataLoader(), val_loader, test_loader, 'CrossEntropyLoss', optimizer)
 trainer.train(num_epochs)
